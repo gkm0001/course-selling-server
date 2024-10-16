@@ -4,7 +4,6 @@ const admincontroller = require('../controllers/admincontroller')
 const admincoursecontroller = require('../controllers/admincoursecontroller')
 const adminMiddleWare = require('../middleware/userAuthMiddleware')
 
-
 //admin Signup 
 router.post('/signup',admincontroller.signup);
 
@@ -20,6 +19,8 @@ router.put('/update/course',adminMiddleWare,admincoursecontroller.updatecourse)
 //give all the courses which I create
 router.get('/allcourses',adminMiddleWare,admincoursecontroller.allcourses)
 
+//Delete the course
+router.delete('/delete/:id',adminMiddleWare , admincoursecontroller.deletecourse)
 
 
 module.exports = router

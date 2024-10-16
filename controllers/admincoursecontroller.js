@@ -152,9 +152,43 @@ const allcourses = async (req, res) => {
     }
 }
 
+const deletecourse = async(req,res) => {
+     const adminId = req.userId;
+     
+     const course = z.object({
+         courseId : z.string().min(4)
+     })
+
+     const parseDatawithsuccess = course.safeParse(req.body);
+     if(!parseDatawithsuccess.success){
+       return res.status(400).json({message : "Parse unsccuessfull"})
+     }
+     
+     const {courseId} = parseDatawithsuccess.data;
+
+     try {
+         const findCourse = await courseModel.findOne({_id : courseId , creatorId : adminId});
+
+         if(!findCourse){
+            return res.status(400).json({message : "Course not found"});
+         }
+         
+         await courseModel.deleteOne({_id:courseId , creatorId : adminId});
+
+         // Delete the Redis cache for all courses (or you can remove a specific key if needed)
+         await client.del("AllCourses");
+
+         return res.status(200).json({message : "Course deleted successfully"})
+         
+     }catch(err){
+         return res.status(404).json({messgae : err.message || "Some error occured while deleting the course"})
+     }
+}
+
 
 module.exports = {
      createcourse,
      updatecourse,
-     allcourses
+     allcourses,
+     deletecourse
 }
