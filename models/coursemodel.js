@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { string } = require('zod');
+
 
 const courseSchema = new mongoose.Schema({
      title : {

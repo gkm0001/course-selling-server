@@ -4,8 +4,8 @@ const userAuthMiddleware = (req,res,next) => {
 
     try {
         const token = req.header('Authorization')?.replace("Bearer ","");
-        console.log(token);
-        console.log(typeof token);
+     //    console.log(token);
+     //    console.log(typeof token);
         
         
         if(!token){
@@ -18,6 +18,7 @@ const userAuthMiddleware = (req,res,next) => {
     }catch(error){
          console.log(error);
          return res.status(401).json({message : error.message || "Unable to verify"})
+        
     }      
 }
 
