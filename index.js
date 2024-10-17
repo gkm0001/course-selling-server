@@ -1,5 +1,6 @@
 const express = require('express')
 const dotenv = require('dotenv')
+const cors = require('cors')
 const userRouter = require('./routes/user')
 const courseRouter = require('./routes/course')
 const adminRouter = require('./routes/admin')
@@ -15,7 +16,8 @@ connectdb();
 //apply rate limiter
 app.use(limiter)
 
-
+//apply cors
+app.use(cors());
 
 app.use(express.json())
 app.use('/api/v1/user',userRouter)
