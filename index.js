@@ -6,7 +6,7 @@ const adminRouter = require('./routes/admin')
 const connectdb = require('./db')
 const limiter = require('./middleware/ratelimiter')
 const app = express();
-const PORT = 3000
+const port = process.env.PORT || 3000
 dotenv.config();
 
 //connect database
@@ -23,6 +23,6 @@ app.use('/api/v1/admin',adminRouter)
 app.use('/api/v1/course',courseRouter)
 
 
-app.listen(PORT,()=>{
+app.listen(port,()=>{
      console.log(`Server is running on ${PORT}`)
 })

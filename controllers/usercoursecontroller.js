@@ -1,5 +1,5 @@
 const purchaseModel = require('../models/purchasemodel')
-const course = require('../models/coursemodel')
+const courseModel = require('../models/coursemodel')
 const User = require('../models/usermodel')
 const z = require('zod')
 
@@ -55,7 +55,7 @@ const preview = async (req, res) => {
     try {
        
         // Fetch all courses from the database
-        const courses = await Course.find({});
+        const courses = await courseModel.find({});
         
         // Return a successful response with the courses
         return res.status(200).json({
