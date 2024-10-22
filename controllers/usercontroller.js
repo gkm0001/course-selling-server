@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const purchase = require('../models/purchasemodel')
 const course = require('../models/coursemodel')
 const jwt = require('jsonwebtoken')
+const client = require('../config/redisClient')
 
 const signup = async(req,res) => {
     //adding zod validation 
@@ -126,6 +127,16 @@ const coursepurchases =async (req,res) => {
          if(!purchasesExists){
              return res.status(401).json({message :  "No purchases found for this user"})
          }
+
+         const redisUser = `totalCourse:${userId}`
+         const getCourse = client.get(redisUser)
+
+         if (getCourse) {
+            return res.status(200).json({
+                message: "Course fetched successfully",
+                courses: JSON.parse(getCourse)
+            });
+        }
 
          // Find course by course Id 
          const findCourse = await course.find({

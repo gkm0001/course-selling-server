@@ -1,7 +1,8 @@
 const purchaseModel = require('../models/purchasemodel')
 const courseModel = require('../models/coursemodel')
 const User = require('../models/usermodel')
-const z = require('zod')
+const z = require('zod');
+const client = require('../config/redisClient');
 
 const purchase = async (req, res) => {
     const userId = req.userId;
@@ -39,6 +40,10 @@ const purchase = async (req, res) => {
         );
 
         await purchases.save();
+
+        const redisUserKey  = `Purchased:${userId}`
+
+        await client.set(redisUserKey);
 
         return res.status(200).json({
             message: "You have successfully bought the course",

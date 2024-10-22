@@ -101,8 +101,9 @@ const updatecourse = async(req,res) => {
                 }
              ]
         };
+        const redisKey = `AllCourses:${adminId}`
         
-        await client.set("AllCourses", JSON.stringify(storeData));
+        await client.set(redisKey, JSON.stringify(storeData));
         
 
         return res.status(200).json({
@@ -123,7 +124,8 @@ const allcourses = async (req, res) => {
     
     try {
         // Fetch courses from Redis cache
-        const getCourse = await client.get("AllCourses");
+        const redisKey = `AllCourses:${adminId}`
+        const getCourse = await client.get(redisKey);
 
         // If courses are in Redis cache, return them
         if (getCourse) {
@@ -140,7 +142,7 @@ const allcourses = async (req, res) => {
         }
 
         // Store courses in Redis cache with a 1-hour expiration time
-        await client.set("AllCourses", JSON.stringify(bulkcourses), 'EX', 3600);
+        await client.set(redisKey, JSON.stringify(bulkcourses), 'EX', 3600);
 
         return res.status(200).json({
             message: "All courses retrieved",
